@@ -6,12 +6,14 @@
   "author": "Yury Saukou <yury_saukou@epam.com>",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon --exec ts-node index.ts"
+    "start:dev": "nodemon --exec ts-node index.ts"
   },
   "dependencies": {
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/node": "^17.0.42",
+    "@types/uuid": "^8.3.4",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.1",
     "nodemon": "^2.0.16",
