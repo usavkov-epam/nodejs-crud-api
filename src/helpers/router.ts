@@ -1,10 +1,12 @@
 import {
   IncomingMessage,
-  RequestListener,
   ServerResponse,
 } from "http";
 
+import { ERRORS } from "../constants";
 import {
+  HandlerOptions,
+  RequestListenerWithOptions,
   Routes,
 } from "../types";
 
@@ -25,16 +27,16 @@ const routes: Routes = {
 export default class Router {
   constructor() {}
 
-  private addRoute = (method: METHODS) => (path: string, cb: RequestListener): void => {
+  private addRoute = (method: METHODS) => (path: string, cb: RequestListenerWithOptions): void => {
     // RegExp for searching route param
-    const routeParamRegExp = /(?<param>(?<=\$\{|\{)\w+(?=\}))/;
+    const routeParamRegExp = /(?<param>(?<=\$\{|\{)\S+(?=\}))/;
 
     // Array of route chunks strings to create RegExp
     const parsedRouteChunks = path.split("/").reduce((acc: string[], chunk) => {
       const match = chunk.match(routeParamRegExp);
       const paramName = match?.groups?.param;
       
-      acc.push(paramName ? `(?<${paramName}>\\w+)` : chunk);
+      acc.push(paramName ? `(?<${paramName}>\\S+)` : chunk);
 
       return acc;
     }, []);
@@ -45,23 +47,23 @@ export default class Router {
     routes[method][pathString] = cb;
   }
 
-  public get(path: string, cb: RequestListener): void {
+  public get(path: string, cb: RequestListenerWithOptions): void {
     this.addRoute(METHODS.GET)(path, cb);
   }
 
-  public post(path: string, cb: RequestListener): void {
+  public post(path: string, cb: RequestListenerWithOptions): void {
     this.addRoute(METHODS.POST)(path, cb);
   }
 
-  public put(path: string, cb: RequestListener): void {
+  public put(path: string, cb: RequestListenerWithOptions): void {
     this.addRoute(METHODS.PUT)(path, cb);
   }
 
-  public delete(path: string, cb: RequestListener): void {
+  public delete(path: string, cb: RequestListenerWithOptions): void {
     this.addRoute(METHODS.DELETE)(path, cb);
   }
 
-  public handleRequest(req: IncomingMessage, res: ServerResponse): void {
+  public handleRequest(req: IncomingMessage, res: ServerResponse, _options: HandlerOptions): void {
     const { url, method } = req;
     
     const matchedPath = Object.keys(routes[method!]).find((pathString) => {
@@ -77,7 +79,7 @@ export default class Router {
       routes[method!][matchedPath](req, res, { params: {...pathParams} });
     } else {
       res.writeHead(404, { "Content-Type": "application/json" });
-      res.end("{\"error\": \"Page not found.\"}");
+      res.end(JSON.stringify({ error: ERRORS.pageNotFound }));
     }
   };
 }

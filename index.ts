@@ -16,8 +16,8 @@ const app = new ServerApp();
 
 app.get('/api/users', getAllUsers);
 app.get('/api/users/${userId}', getUserById);
-app.post('/api/user', addUser);
-app.put('/api/user/${userId}', updateUser);
+app.post('/api/users', addUser);
+app.put('/api/users/${userId}', updateUser);
 app.delete('/api/users/${userId}', deleteUser);
 
 app.listen(PORT, () => {

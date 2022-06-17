@@ -1,9 +1,9 @@
 import 'dotenv/config';
 
 import http, {
-  RequestListener,
   Server,
 } from "http";
+import { RequestListenerWithOptions } from '../types';
 
 import Router from "./router";
 
@@ -34,19 +34,19 @@ export default class ServerApp {
     this._server.listen(PORT, cb);
   }
 
-  public get(path: string, cb: RequestListener): void {
+  public get(path: string, cb: RequestListenerWithOptions): void {
     this._router.get(path, cb);
   }
   
-  public post(path: string, cb: RequestListener): void {
+  public post(path: string, cb: RequestListenerWithOptions): void {
     this._router.post(path, cb);
   }
 
-  public put(path: string, cb: RequestListener): void {
+  public put(path: string, cb: RequestListenerWithOptions): void {
     this._router.put(path, cb);
   }
 
-  public delete(path: string, cb: RequestListener): void {
+  public delete(path: string, cb: RequestListenerWithOptions): void {
     this._router.delete(path, cb);
   }
 }

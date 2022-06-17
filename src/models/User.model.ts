@@ -1,6 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 
+
 import InMemoryDB from '../db/in-memory';
+
+import { ERRORS } from '../constants';
 import {
   StorageField,
   User,
@@ -45,19 +48,24 @@ export class UserModel {
   public async create(user: User): Promise<UserEntity> {
     const hash = uuidv4();
     const usersMap = await this.getEntity();
-    const foundUser = usersMap[hash];
-    return usersMap[hash] = { ...foundUser, ...user, id: hash };
+    return usersMap[hash] = { ...user, id: hash };
   }
 
-  public async update(id: string, user: object): Promise<UserEntity> {
+  public async update(id: string, user: Partial<User>): Promise<UserEntity> {
     const usersMap = await this.getEntity();
     const foundUser = usersMap[id];
+    
+    if (!foundUser) throw new Error(ERRORS.userNotFound);
+
     return usersMap[foundUser.id] = { ...foundUser, ...user, id };
   }
 
   public async delete(id: string): Promise<UserEntity> {
     const usersMap = await this.getEntity();
     const foundUser = usersMap[id];
+
+    if (!foundUser) throw new Error(ERRORS.userNotFound);
+
     delete usersMap[id];
     return foundUser;
   }

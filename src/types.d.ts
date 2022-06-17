@@ -10,6 +10,14 @@ export type RequestListenerWithOptions = (
   options: HandlerOptions,
 ) => void;
 
+export type ResponceData = string | number | object | null | undefined;
+
+export interface ResponseManager {
+  res: ServerResponse;
+  statusCode: number;
+  data?: ResponceData;
+}
+
 export interface Routes {
   [method: string]: {
     [path: string]: RequestListenerWithOptions;
