@@ -4,27 +4,15 @@ import {
   ServerResponse,
 } from "http";
 
+import {
+  Routes,
+} from "../types";
+
 export enum METHODS {
   GET = "GET",
   POST = "POST",
   PUT = "PUT",
   DELETE = "DELETE",
-}
-
-interface Options {
-  [key: string]: any;
-}
-
-export type RequestListenerWithOptions = (
-  req: IncomingMessage,
-  res: ServerResponse,
-  options: Options,
-) => void;
-
-type Routes = {
-  [method: string]: {
-    [path: string]: RequestListenerWithOptions;
-  }
 }
 
 const routes: Routes = {

@@ -1,13 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import InMemoryDB, { StorageField } from '../db/in-memory';
-
-export interface User {
-  readonly id: string;
-  username: string;
-  age: number;
-  hobbies: string[] | [];
-};
+import InMemoryDB from '../db/in-memory';
+import {
+  StorageField,
+  User,
+  UserEntities,
+  UserEntity,
+} from '../types';
 
 export enum Selectors {
   id = 'id',
@@ -15,9 +14,6 @@ export enum Selectors {
   age = 'age',
   hobbies = 'hobbies',
 }
-
-export type UserEntity = Promise<User | undefined>;
-export type UserEntities = Promise<User[] | undefined>;
 
 const db = InMemoryDB.instance;
 

@@ -11,6 +11,7 @@
   "dependencies": {
     "uuid": "^8.3.2"
   },
+  "types": "src/types.d.ts",
   "devDependencies": {
     "@types/node": "^17.0.42",
     "@types/uuid": "^8.3.4",

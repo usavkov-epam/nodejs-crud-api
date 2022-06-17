@@ -1,9 +1,7 @@
-export interface StorageField<T> {
-  [field: string]: T;
-};
-export interface Storage {
-  [entity: string]: StorageField<any>;
-};
+import {
+  Storage,
+  StorageField,
+} from '../types';
 
 class InMemoryDB {
   private static _instance: InMemoryDB;
