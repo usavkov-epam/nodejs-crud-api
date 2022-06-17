@@ -9,6 +9,8 @@ import {
 const userModel = new UserModel();
 
 export const getAllUsers = async (): Promise<UserEntities> => {
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end('{"message": "Hello World"}');
   return userModel.getAll();
 };
 
