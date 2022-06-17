@@ -4,4 +4,4 @@ export {
   UserModel,
   UserEntities,
   UserEntity,
-} from './userModel';
+} from './User.model';
