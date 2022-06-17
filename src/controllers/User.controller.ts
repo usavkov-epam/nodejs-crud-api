@@ -45,7 +45,7 @@ export const getUserById = async (
     .then(user => (
       user
         ? send(res, user)
-        : sendResponse({ res, statusCode: 404, data: { message: ERRORS.userNotFound } })
+        : sendResponse({ res, statusCode: 404, data: { errors: [{ message: ERRORS.userNotFound }] } })
     ))
     .catch(err => sendServerError(res, err));
 }
@@ -75,7 +75,7 @@ export const addUser = async (req: IncomingMessage, res: ServerResponse): Promis
         if (validationErrors.length) return sendClientError(res, { errors: validationErrors });
 
         const user = await userModel.create(parsedData as User)
-        return send(res, user);
+        return sendResponse({ res, statusCode: 201, data: user });
       } catch (error) {
         return sendServerError(res, { errors: [{ message: error }] });
       }
@@ -119,7 +119,11 @@ export const updateUser = async (
         return sendServerError(res, { errors: [{ message: message || ERRORS.genericError }] });
       }
     })
-    .catch(({ message }) => sendServerError(res, { errors: [{ message: message || ERRORS.genericError }] }));
+    .catch(({ message }) => {
+      return message === ERRORS.userNotFound
+        ? sendResponse({ res, statusCode: 404, data: { errors: [{ message: ERRORS.userNotFound }] } })
+        : sendServerError(res, { errors: [{ message: message || ERRORS.genericError }] });
+    });
 };
 
 export const deleteUser = async (
@@ -131,5 +135,9 @@ export const deleteUser = async (
   
   return userModel.delete(params.userId)
     .then(() => sendResponse({ res, statusCode: 204 }))
-    .catch(({ message }) => sendServerError(res, { errors: [{ message: message || ERRORS.genericError }] }));
+    .catch(({ message }) => {
+      return message === ERRORS.userNotFound
+        ? sendResponse({ res, statusCode: 404, data: { errors: [{ message: ERRORS.userNotFound }] } })
+        : sendServerError(res, { errors: [{ message: message || ERRORS.genericError }] });
+    });
 };
