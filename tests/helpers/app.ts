@@ -1,0 +1,18 @@
+import { addUser, deleteUser, getAllUsers, getUserById, updateUser } from "../../src/controllers";
+import ServerApp from "../../src/helpers/server";
+
+export const createApp = () => {
+  const PORT = process.env.PORT || 3000;
+
+  const app = new ServerApp();
+
+  app.get('/api/users', getAllUsers);
+  app.get('/api/users/${userId}', getUserById);
+  app.post('/api/users', addUser);
+  app.put('/api/users/${userId}', updateUser);
+  app.delete('/api/users/${userId}', deleteUser);
+  
+  return app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  })
+}

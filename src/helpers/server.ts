@@ -19,19 +19,15 @@ export default class ServerApp {
 
     this._server.on("request", this._router.handleRequest);
 
-    this._server.on("close", () => {
-      console.log("Server closed");
-    });
-
-    process.on("SIGINT", this._server.close);
+    process.on("exit", this._server.close);
   }
 
   public close(cb: () => void): void {
     this._server.close(cb);
   }
 
-  public listen(PORT = defaultPort, cb: () => void): void {
-    this._server.listen(PORT, cb);
+  public listen(PORT = defaultPort, cb: () => void) {
+    return this._server.listen(PORT, cb);
   }
 
   public get(path: string, cb: RequestListenerWithOptions): void {

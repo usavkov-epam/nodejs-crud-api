@@ -29,9 +29,9 @@ export const validateFieldsRequired = (fields: { [key: string]: any }) => {
 
 export const validateFieldsTypes = (fields: { [key: string]: any }) => {
   const rules = {
-    [USER_REQUIRED_FIELDS.username]: typeof fields[USER_REQUIRED_FIELDS.username] === 'string',
-    [USER_REQUIRED_FIELDS.age]: typeof fields[USER_REQUIRED_FIELDS.age] === 'number',
-    [USER_REQUIRED_FIELDS.hobbies]: Array.isArray(fields[USER_REQUIRED_FIELDS.hobbies]) && fields[USER_REQUIRED_FIELDS.hobbies].every((hobby: unknown) => typeof hobby === 'string'),
+    [USER_REQUIRED_FIELDS.username]: fields[USER_REQUIRED_FIELDS.username] ? typeof fields[USER_REQUIRED_FIELDS.username] === 'string' : true,
+    [USER_REQUIRED_FIELDS.age]: fields[USER_REQUIRED_FIELDS.age] ? typeof fields[USER_REQUIRED_FIELDS.age] === 'number' : true,
+    [USER_REQUIRED_FIELDS.hobbies]: fields[USER_REQUIRED_FIELDS.hobbies] ? Array.isArray(fields[USER_REQUIRED_FIELDS.hobbies]) && fields[USER_REQUIRED_FIELDS.hobbies].every((hobby: unknown) => typeof hobby === 'string') : true,
   };
 
   const invalidFields = Object.entries(rules).filter(([, isValid]) => isValid === false);

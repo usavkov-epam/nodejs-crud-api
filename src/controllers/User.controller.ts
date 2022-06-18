@@ -116,7 +116,9 @@ export const updateUser = async (
         const user = await userModel.update(params.userId, parsedData as User)
         return send(res, user);
       } catch ({ message }) {
-        return sendServerError(res, { errors: [{ message: message || ERRORS.genericError }] });
+        return message === ERRORS.userNotFound
+          ? sendResponse({ res, statusCode: 404, data: { errors: [{ message: ERRORS.userNotFound }] } })
+          : sendServerError(res, { errors: [{ message: message || ERRORS.genericError }] });
       }
     })
     .catch(({ message }) => {
