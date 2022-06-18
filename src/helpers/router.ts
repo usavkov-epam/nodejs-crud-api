@@ -9,6 +9,7 @@ import {
   RequestListenerWithOptions,
   Routes,
 } from "../types";
+import { Colors } from "./console";
 
 export enum METHODS {
   GET = "GET",
@@ -63,8 +64,19 @@ export default class Router {
     this.addRoute(METHODS.DELETE)(path, cb);
   }
 
-  public handleRequest(req: IncomingMessage, res: ServerResponse, _options: HandlerOptions): void {
+  public handleRequest(req: IncomingMessage, res: ServerResponse, { debug = true }: HandlerOptions = {}): void {
     const { url, method } = req;
+
+    if (debug) {
+      const colorsMap = {
+        [METHODS.GET]: "green",
+        [METHODS.POST]: "yellow",
+        [METHODS.PUT]: "blue",
+        [METHODS.DELETE]: "red",
+      } as HandlerOptions;
+      const color = colorsMap[method!];
+      console.log(Colors[color](method!), url);
+    }
     
     const matchedPath = Object.keys(routes[method!]).find((pathString) => {
       const routeRegExp = new RegExp(pathString);
@@ -73,8 +85,6 @@ export default class Router {
 
     if (matchedPath) {
       const pathParams = url!.match(new RegExp(matchedPath))?.groups;
-
-      console.log(pathParams);
       
       routes[method!][matchedPath](req, res, { params: {...pathParams} });
     } else {
