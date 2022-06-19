@@ -6,9 +6,11 @@
   "author": "Yury Saukou <yury_saukou@epam.com>",
   "license": "MIT",
   "scripts": {
-    "test": "jest",
-    "start:dev": "nodemon --exec ts-node index.ts",
-    "start:prod": "cross-env NODE_ENV=production tsc --declaration && node ./build/index.js"
+    "test": "npx jest",
+    "start:dev": "npx nodemon --exec ts-node index.ts",
+    "start:dev:multi": "npx nodemon --exec ts-node index.ts --multi",
+    "start:prod": "npx cross-env NODE_ENV=production tsc --declaration && node ./build/index.js",
+    "start:multi": "npx cross-env NODE_ENV=production tsc --declaration && node ./build/index.js --multi"
   },
   "dependencies": {
     "uuid": "^8.3.2"

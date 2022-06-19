@@ -3,8 +3,9 @@
 ## NPM Scripts
 - `yarn test` or `npm run test` - Run test cases for server app;
 - `yarn start:dev` or `npm run start:dev` - Run server in development mode;
+- `yarn start:dev:multi` or `npm run start:dev:multi` - Run multiple instances of server app in development mode;
 - `yarn start:prod` or `npm run start:prod` - Build server app and run in production mode;
-- `yarn start:multi` or `npm run start:multi` - Run multiple instances of server app.
+- `yarn start:multi` or `npm run start:multi` - Run multiple instances of server app in production mode.
 ---
 ## Endpoints
 - **GET:**
