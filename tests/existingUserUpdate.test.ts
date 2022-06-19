@@ -1,20 +1,21 @@
+import createApp from '../src/app';
 import { user } from './fixtures';
-import { createApp } from './helpers/app';
 import UserHelper from "./helpers/user";
 
-const app = createApp();
-const helper = new UserHelper(app);
+const PORT = process.env.PORT || 3000;
+const server = createApp().listen(PORT, () => console.log(`Test server listening on port ${PORT}`));
+const helper = new UserHelper(server);
 
 describe("Succsessful updating of existing user", () => {
   let newUserId: string;
 
   beforeAll(done => {
-    app.close();
+    server.close();
     done();
   })
 
   afterAll(done => {
-    app.close();
+    server.close();
     done();
   })
 

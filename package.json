@@ -6,7 +6,7 @@
   "author": "Yury Saukou <yury_saukou@epam.com>",
   "license": "MIT",
   "scripts": {
-    "test": "npx jest",
+    "test": "npx jest -i",
     "start:dev": "npx nodemon --exec ts-node index.ts",
     "start:dev:multi": "npx nodemon --exec ts-node index.ts --multi",
     "start:prod": "npx cross-env NODE_ENV=production tsc --declaration && node ./build/index.js",

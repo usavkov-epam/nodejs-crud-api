@@ -1,49 +1,50 @@
 import request from "supertest";
 
+import createApp from '../src/app';
 import { ERRORS } from "../src/constants";
-import { createApp } from './helpers/app';
 import UserHelper from "./helpers/user";
 
-const app = createApp();
-const helper = new UserHelper(app);
+const PORT = process.env.PORT || 3000;
+const server = createApp().listen(PORT, () => console.log(`Test server listening on port ${PORT}`));
+const helper = new UserHelper(server);
 
 const VALID_UUID = '0e6ff114-21d5-4f56-9513-624623b203a0';
 
 describe("Failing request handling", () => {
   beforeAll(done => {
-    app.close();
+    server.close();
     done();
   })
 
   afterAll(done => {
-    app.close();
+    server.close();
     done();
   })
 
   describe('404 Page not found', () => {
     it("GET request for non-existing endpoint (expected corresponding error and status code)", async () => {
-      const result = await request(app).get('/badapi/users');
+      const result = await request(server).get('/badapi/users');
   
       expect(result.statusCode).toEqual(404);
       expect(result.body).toEqual(expect.objectContaining({ error: ERRORS.pageNotFound }))
     });
   
     it("POST request for non-existing endpoint (expected corresponding error and status code)", async () => {
-      const result = await request(app).post('/badapi/users');
+      const result = await request(server).post('/badapi/users');
   
       expect(result.statusCode).toEqual(404);
       expect(result.body).toEqual(expect.objectContaining({ error: ERRORS.pageNotFound }))
     });
   
     it("PUT request for non-existing endpoint (expected corresponding error and status code)", async () => {
-      const result = await request(app).put('/badapi/users');
+      const result = await request(server).put('/badapi/users');
   
       expect(result.statusCode).toEqual(404);
       expect(result.body).toEqual(expect.objectContaining({ error: ERRORS.pageNotFound }))
     });
   
     it("DELETE request for non-existing endpoint (expected corresponding error and status code)", async () => {
-      const result = await request(app).delete('/badapi/users');
+      const result = await request(server).delete('/badapi/users');
   
       expect(result.statusCode).toEqual(404);
       expect(result.body).toEqual(expect.objectContaining({ error: ERRORS.pageNotFound }))

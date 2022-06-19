@@ -3,27 +3,13 @@ import 'dotenv/config';
 import cluster from "cluster";
 import { cpus } from "os";
 
-import {
-  addUser,
-  deleteUser,
-  getAllUsers,
-  getUserById,
-  updateUser,
-} from './src/controllers';
-
+import createApp from './src/app';
 import { Colors } from './src/helpers/console';
-import ServerApp from './src/helpers/server';
 
 const PORT = process.env.PORT || 3000;
 const isScalable = process.argv.includes('--multi')
 
-const app = new ServerApp();
-
-app.get('/api/users', getAllUsers);
-app.get('/api/users/${userId}', getUserById);
-app.post('/api/users', addUser);
-app.put('/api/users/${userId}', updateUser);
-app.delete('/api/users/${userId}', deleteUser);
+const app = createApp();
 
 if (cluster.isPrimary && isScalable) {
   const workers = cpus().map(() => cluster.fork());
